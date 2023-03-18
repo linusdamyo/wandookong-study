@@ -15,11 +15,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
         const ctx = host.switchToHttp();
 
         const httpStatus = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+        const message = exception instanceof HttpException ? exception.toString() : exception instanceof Error ? exception.message : undefined;
 
         const responseBody = {
             statusCode: httpStatus,
             timestamp: new Date().toISOString(),
             path: httpAdapter.getRequestUrl(ctx.getRequest()),
+            message,
         };
 
         this.logger.error(responseBody, exception instanceof Error ? exception.stack : undefined);
