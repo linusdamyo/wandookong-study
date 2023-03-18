@@ -7,6 +7,9 @@ import { AppModule } from '@src/app.module';
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
+    // @TODO: origin, header 설정 필요
+    app.enableCors();
+
     const httpAdapter = app.get(HttpAdapterHost);
     app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
 
