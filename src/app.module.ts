@@ -4,6 +4,7 @@ import Joi from 'joi';
 import { AppController } from '@src/app.controller';
 import { AppService } from '@src/app.service';
 import { AuthModule } from '@src/auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import { AuthModule } from '@src/auth/auth.module';
             }),
         }),
         AuthModule,
+        UsersModule,
     ],
     controllers: [AppController],
     providers: [AppService],
