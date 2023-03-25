@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import Joi from 'joi';
 import { AppController } from '@src/app.controller';
 import { AppService } from '@src/app.service';
-import Joi from 'joi';
+import { AuthModule } from '@src/auth/auth.module';
 
 @Module({
     imports: [
@@ -12,6 +13,7 @@ import Joi from 'joi';
                 NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
             }),
         }),
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],
