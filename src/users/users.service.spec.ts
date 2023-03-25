@@ -47,18 +47,17 @@ describe('UsersService', () => {
         user = await dataSource.getRepository(UserEntity).save({ email: 'iu@wandookong.com', password: '123456', nickname: '아이유' });
     });
 
-    it('getUser()', async () => {
-        const findUser = await service.getUser(user.id);
+    it('getMe()', async () => {
+        const result = await service.getMe({ userId: user.id });
 
-        expect(findUser).toBeDefined();
-        expect(findUser.nickname).toBe(user.nickname);
-        expect(findUser.email).toBe(user.email);
-        expect(findUser.password).toBe(user.password);
-        expect(findUser.status).toBe(USER_STATUS.NORMAL);
+        expect(result).toBeDefined();
+        expect(result.nickname).toBe(user.nickname);
+        expect(result.email).toBe(user.email);
+        expect(result.status).toBe(USER_STATUS.NORMAL);
     });
 
-    it('getUser() error!', async () => {
-        await expect(service.getUser(user.id + 1)).rejects.toThrow(EntityNotFoundError);
+    it('getMe() error!', async () => {
+        await expect(service.getMe({ userId: user.id + 1 })).rejects.toThrow(EntityNotFoundError);
     });
 
     it('getUserByEmail()', async () => {
