@@ -61,6 +61,21 @@ describe('UsersService', () => {
         await expect(service.getUser(user.id + 1)).rejects.toThrow(EntityNotFoundError);
     });
 
+    it('getUserByEmail()', async () => {
+        const findUser = await service.getUserByEmail(user.email);
+
+        expect(findUser).toBeDefined();
+        expect(findUser!.id).toBe(user.id);
+        expect(findUser!.nickname).toBe(user.nickname);
+        expect(findUser!.status).toBe(USER_STATUS.NORMAL);
+    });
+
+    it('getUserByEmail() - no user', async () => {
+        const findUser = await service.getUserByEmail(user.email + '_not');
+
+        expect(findUser).toBeNull();
+    });
+
     afterEach(async () => {
         await dataSource.getRepository(UserEntity).delete({ id: user.id });
     });

@@ -8,4 +8,8 @@ export class UsersService {
     async getUser(userId: number) {
         return this.usersRepository.findOne(userId);
     }
+
+    async getUserByEmail(email: string) {
+        return this.usersRepository.findOneByEmail(email);
+    }
 }

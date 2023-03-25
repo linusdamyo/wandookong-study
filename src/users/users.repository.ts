@@ -13,4 +13,8 @@ export class UsersRepository {
     async findOne(id: number) {
         return this.#usersRepository.findOneByOrFail({ id });
     }
+
+    async findOneByEmail(email: string) {
+        return this.#usersRepository.findOneBy({ email });
+    }
 }
