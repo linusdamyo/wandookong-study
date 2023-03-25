@@ -1,16 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { DataSource, EntityNotFoundError } from 'typeorm';
 import { UsersService } from '@src/users/users.service';
 import { UsersModule } from '@src/users/users.module';
 import { UserEntity } from '@src/users/entities/user.entity';
+import { USER_STATUS } from '@src/common/enums/status.enum';
 
 describe('UsersService', () => {
     let service: UsersService;
     let dataSource: DataSource;
+    let user: UserEntity;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [
                 ConfigModule.forRoot({
@@ -41,10 +43,26 @@ describe('UsersService', () => {
         dataSource = module.get<DataSource>(DataSource);
     });
 
-    it('load user entity', async () => {
-        const users = await dataSource.getRepository(UserEntity).find();
+    beforeEach(async () => {
+        user = await dataSource.getRepository(UserEntity).save({ email: 'iu@wandookong.com', password: '123456', nickname: '아이유' });
+    });
 
-        expect(users).toEqual([]);
+    it('getUser()', async () => {
+        const findUser = await service.getUser(user.id);
+
+        expect(findUser).toBeDefined();
+        expect(findUser.nickname).toBe(user.nickname);
+        expect(findUser.email).toBe(user.email);
+        expect(findUser.password).toBe(user.password);
+        expect(findUser.status).toBe(USER_STATUS.NORMAL);
+    });
+
+    it('getUser() error!', async () => {
+        await expect(service.getUser(user.id + 1)).rejects.toThrow(EntityNotFoundError);
+    });
+
+    afterEach(async () => {
+        await dataSource.getRepository(UserEntity).delete({ id: user.id });
     });
 
     afterAll(async () => {
