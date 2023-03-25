@@ -5,12 +5,12 @@ import { AppModule } from '@src/app.module';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
-describe('AppController (e2e)', () => {
+describe('AuthController (e2e)', () => {
     let app: INestApplication;
     let configService: ConfigService;
     let jwtService: JwtService;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
             imports: [AppModule],
         }).compile();
@@ -33,5 +33,9 @@ describe('AppController (e2e)', () => {
 
             return request(app.getHttpServer()).post('/auth/test').set('Authorization', `Bearer ${accessToken}`).expect(HttpStatus.CREATED);
         });
+    });
+
+    afterAll(async () => {
+        await app.close();
     });
 });
