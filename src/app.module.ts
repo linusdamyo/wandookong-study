@@ -11,6 +11,8 @@ import { AuthModule } from '@src/auth/auth.module';
             envFilePath: `${__dirname}/config/.${process.env.NODE_ENV}.env`,
             validationSchema: Joi.object({
                 NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
+                JWT_SECRET: Joi.string().required(),
+                JWT_EXP: Joi.string().required(),
             }),
         }),
         AuthModule,
