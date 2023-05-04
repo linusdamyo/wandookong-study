@@ -11,14 +11,21 @@ export class HttpLoggingInterceptor implements NestInterceptor {
         const { method, originalUrl, query, params, body } = httpContext.getRequest();
 
         return next.handle().pipe(
-            tap(data =>
-                this.logger.log(
-                    JSON.stringify({
-                        request: { method, originalUrl, query, params, body },
-                        response: { statusCode: httpContext.getResponse()?.statusCode, data },
-                    }),
-                ),
-            ),
+            tap({
+                next: data =>
+                    this.logger.log(
+                        JSON.stringify({
+                            request: { method, originalUrl, query, params, body },
+                            response: { statusCode: httpContext.getResponse()?.statusCode, data },
+                        }),
+                    ),
+                error: () =>
+                    this.logger.error(
+                        JSON.stringify({
+                            request: { method, originalUrl, query, params, body },
+                        }),
+                    ),
+            }),
         );
     }
 }
