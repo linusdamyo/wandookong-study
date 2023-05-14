@@ -30,7 +30,6 @@ describe('UsersService', () => {
                         database: configService.get('DB_DATABASE'),
                         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
                         synchronize: true,
-                        autoLoadEntities: true,
                         logging: false,
                         charset: 'utf8mb4',
                     }),

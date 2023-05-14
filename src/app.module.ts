@@ -34,7 +34,6 @@ import { UsersModule } from '@src/users/users.module';
                 database: configService.get('DB_DATABASE'),
                 entities: [__dirname + '/**/*.entity{.ts,.js}'],
                 synchronize: process.env.NODE_ENV === 'test',
-                autoLoadEntities: true,
                 logging: false,
                 charset: 'utf8mb4',
             }),
